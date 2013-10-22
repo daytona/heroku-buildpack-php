@@ -51,8 +51,7 @@ if [ -f $BUILD_DIR/package.json ]; then
 
 	if [ -f $BUILD_DIR/Gruntfile.js ]; then
 		echo "-----> Running Grunt tasks"
-		cd $BUILD_DIR
-		grunt heroku --gruntfile $BUILD_DIR/Gruntfile.js
+		grunt heroku --gruntfile $BUILD_DIR/troll.js
 		echo "done." | indent
 	fi
 

@@ -29,8 +29,29 @@ export LANG=en_US.UTF-8
 echo "       WARNING: This deploy process depends on heroku lab feature making config vars availible during build."
 echo "       See: https://devcenter.heroku.com/articles/labs-user-env-compile"
 
-# Check for custom deploy script
+# Check for npm enviroment
+if [ -f "${BUILD_DIR}/package.json" ]; then
+	echo "-----> Installing Node"
+	NODE_BUILDPACK_DIR=$(mktemp -d -t node.XXXXXX)
+	NODE_BUILD_DIR=$(mktemp -d -t node_build.XXXXXX)
+	git clone --quiet https://github.com/heroku/heroku-buildpack-nodejs.git $NODE_BUILDPACK_DIR
+	mv $BUILD_DIR/package.json $NODE_BUILD_DIR/package.json
+	$NODE_BUILDPACK_DIR/bin/compile $NODE_BUILD_DIR $CACHE_DIR
+	echo "done." | indent
 
+	export PATH=$PATH:$NODE_BUILD_DIR/bin:$NODE_BUILD_DIR/node_modules/.bin
+fi
+
+# Check for ruby enviroment
+if [ -f "${BUILD_DIR}/Gemfile" ]; then
+	echo "-----> Installing Gems"
+	export GEM_HOME=$BUILD_DIR/.gem/ruby/1.9.1
+	PATH="$GEM_HOME/bin:$PATH"
+	HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri
+	bundle install
+fi
+
+# Check for custom deploy script
 echo "-----> Looking for custom deploy script"
 if [ -f "${BUILD_DIR}/bin/deploy" ]; then
 	echo "Found script!" | indent

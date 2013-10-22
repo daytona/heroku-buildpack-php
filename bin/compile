@@ -28,7 +28,7 @@ echo "       WARNING: This deploy process depends on heroku lab feature making c
 echo "       See: https://devcenter.heroku.com/articles/labs-user-env-compile"
 
 # Check for ruby enviroment
-if [ -f $BUILD_DIR}/Gemfile ]; then
+if [ -f $BUILD_DIR/Gemfile ]; then
 	echo "-----> Installing Gems"
 	export GEM_HOME=$BUILD_DIR/.gem/ruby/1.9.1
 	PATH="$GEM_HOME/bin:$PATH"

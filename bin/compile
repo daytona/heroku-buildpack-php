@@ -29,6 +29,17 @@ export LANG=en_US.UTF-8
 echo "       WARNING: This deploy process depends on heroku lab feature making config vars availible during build."
 echo "       See: https://devcenter.heroku.com/articles/labs-user-env-compile"
 
+# Install node
+echo "-----> Installing Node"
+NODE_BUILDPACK_DIR=$(mktemp -d -t node.XXXXXX)
+NODE_BUILD_DIR=$(mktemp -d -t node_build.XXXXXX)
+git clone --quiet https://github.com/heroku/heroku-buildpack-nodejs.git $NODE_BUILDPACK_DIR
+mv $LP_DIR/vendor/package.json $NODE_BUILD_DIR/package.json
+$NODE_BUILDPACK_DIR/bin/compile $NODE_BUILD_DIR $CACHE_DIR
+echo "done." | indent
+
+export PATH=$PATH:$NODE_BUILD_DIR/bin:$NODE_BUILD_DIR/node_modules/.bin
+
 # Check for custom deploy script
 
 echo "-----> Looking for custom deploy script"
@@ -77,20 +88,7 @@ fi
 
 if [ -n "${SPLIT_FILES}" ]; then
 
-	# Node Installation
-
-	if [ command -v npm >/dev/null 2>&1 ]; then
-		echo "-----> Installing Node"
-		NODE_BUILDPACK_DIR=$(mktemp -d -t node.XXXXXX)
-		NODE_BUILD_DIR=$(mktemp -d -t node_build.XXXXXX)
-		git clone --quiet https://github.com/heroku/heroku-buildpack-nodejs.git $NODE_BUILDPACK_DIR
-		mv $LP_DIR/vendor/package.json $NODE_BUILD_DIR/package.json
-		$NODE_BUILDPACK_DIR/bin/compile $NODE_BUILD_DIR $CACHE_DIR
-		echo "done." | indent
-
-		export PATH=$PATH:$NODE_BUILD_DIR/bin:$NODE_BUILD_DIR/node_modules/.bin
-	fi
-
+	# Bless operation
 	echo "-----> Blessing CSS"
 	for f in ${SPLIT_FILES}; do
 		NO_END=${f%.*}

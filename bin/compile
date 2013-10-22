@@ -8,13 +8,6 @@ function indent() {
   sed -u 's/^/       /'
 }
 
-function mktmpdir() {
-  dir=$(mktemp -t node-$1-XXXX)
-  rm -rf $dir
-  mkdir -p $dir
-  echo $dir
-}
-
 # config
 APACHE_VERSION="2.2.22"
 APACHE_PATH="apache"
@@ -46,13 +39,17 @@ fi
 # Check for npm enviroment
 if [ -f $BUILD_DIR/package.json ]; then
 	echo "-----> Installing Node"
-	NODE_BUILDPACK_DIR=$(mktmpdir nodepack)
-	NODE_BUILD_DIR=$(mktmpdir nodebuild)
+	NODE_BUILDPACK_DIR=$(mktemp -d -t node.XXXXXX)
+	NODE_BUILD_DIR=$(mktemp -d -t node_build.XXXXXX)
 	git clone --quiet https://github.com/heroku/heroku-buildpack-nodejs.git $NODE_BUILDPACK_DIR
 	mv $BUILD_DIR/package.json $NODE_BUILD_DIR/package.json
 	$NODE_BUILDPACK_DIR/bin/compile $NODE_BUILD_DIR $CACHE_DIR
 
 	export PATH=$PATH:$NODE_BUILD_DIR/bin:$NODE_BUILD_DIR/node_modules/.bin
+
+	echo "-----> Trololol"
+	ls $NODE_BUILD_DIR/node_modules
+	echo "-----> lololol"
 
 	grunt heroku
 

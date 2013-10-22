@@ -28,6 +28,14 @@ export LANG=en_US.UTF-8
 echo "WARNING: This deploy process depends on heroku lab feature making config vars availible during build." | indent
 echo "See: https://devcenter.heroku.com/articles/labs-user-env-compile" | indent
 
+echo "-----> Installing SASS..."
+if [ ! -d "$PWD/.gem" ]; then
+  mkdir $PWD/.gem
+fi
+gem install sass --no-rdoc --no-ri --install-dir "$PWD/.gem" | indent
+export GEM_PATH=$GEM_PATH:$PWD/.gem
+echo "done." | indent
+
 echo "-----> Looking for local package file"
 if [ -f "${BUILD_DIR}/package.json" ]; then
 	echo "-----> Package file found, installing Node"
@@ -40,9 +48,9 @@ if [ -f "${BUILD_DIR}/package.json" ]; then
 
 	export PATH=$PATH:$NODE_BUILD_DIR/bin:$NODE_BUILD_DIR/node_modules/.bin
 
-	npm install
+	$NODE_BUILD_DIR/bin/npm install
 
-	grunt
+	$NODE_BUILD_DIR/bin/grunt
 fi
 
 # Check for custom deploy script
@@ -66,15 +74,6 @@ fi
 if [ -n "${SASS_PATH}" ]; then
 
 	# CSS Compilation
-
-	echo "-----> Installing SASS..."
-	if [ ! -d "$PWD/.gem" ]; then
-	  mkdir $PWD/.gem
-	fi
-	gem install sass --no-rdoc --no-ri --install-dir "$PWD/.gem" | indent
-	export GEM_PATH=$GEM_PATH:$PWD/.gem
-	echo "done." | indent
-
 	if [ ! -f "${BUILD_DIR}/config.rb" ]; then
 		echo "-----> Compiling SASS..."
 		$PWD/.gem/bin/sass --update "${BUILD_DIR}/${SASS_PATH}":"${BUILD_DIR}/${CSS_PATH}" --style compressed | indent

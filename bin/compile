@@ -52,6 +52,8 @@ fi
 if [ -f $BUILD_DIR/bin/deploy ]; then
 	echo "-----> Executing deploy script"
 
+	ls $BUILD_DIR/bin
+
 	.$BUILD_DIR/bin/deploy ${BUILD_DIR}
 
 	echo "done." | indent

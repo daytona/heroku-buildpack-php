@@ -34,6 +34,8 @@ if [ -f $BUILD_DIR/Gemfile ]; then
 	PATH="$GEM_HOME/bin:$PATH"
 	HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri --install-dir $BUILD_DIR/.gem
 
+	ls -lg $BUILD_DIR/.gem/bin
+
 	bundle install --gemfile $BUILD_DIR/Gemfile --path $BUILD_DIR/.gem
 
 	export PATH=$PATH:$BUILD_DIR/.gem/bin

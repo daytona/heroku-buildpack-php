@@ -40,7 +40,9 @@ if [ -f $BUILD_DIR/Gemfile ]; then
 
 	bundle install --gemfile $BUILD_DIR/Gemfile --path $PWD/.gem
 
-	export GEM_PATH=$GEM_PATH:$PWD/.gem
+	ls $PWD/.gem
+
+	export PATH=$PATH:$PWD/.gem
 fi
 
 # Check for npm w/ Grunt enviroment

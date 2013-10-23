@@ -40,7 +40,7 @@ if [ -f $BUILD_DIR/Gemfile ]; then
 
 	bundle install --gemfile $BUILD_DIR/Gemfile --path $PWD/.gem
 
-	ls $PWD/.gem
+	ls $PWD/.gem/bin
 
 	export PATH=$PATH:$PWD/.gem
 fi

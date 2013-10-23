@@ -29,20 +29,14 @@ echo "       See: https://devcenter.heroku.com/articles/labs-user-env-compile"
 
 # Check for ruby enviroment
 if [ -f $BUILD_DIR/Gemfile ]; then
-	if [ ! -d "$PWD/.gem" ]; then
-	  mkdir $PWD/.gem
-	fi
-
 	echo "-----> Installing Gems"
 	export GEM_HOME=$BUILD_DIR/.gem/ruby/1.9.1
 	PATH="$GEM_HOME/bin:$PATH"
-	HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri
+	HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri --install-dir $BUILD_DIR/.gem
 
-	bundle install --gemfile $BUILD_DIR/Gemfile --path $PWD/.gem
+	bundle install --gemfile $BUILD_DIR/Gemfile --path $BUILD_DIR/.gem
 
-	ls $PWD/.gem/bin
-
-	export PATH=$PATH:$PWD/.gem/bin
+	export PATH=$PATH:$BUILD_DIR/.gem/bin
 fi
 
 # Check for npm w/ Grunt enviroment

@@ -32,13 +32,13 @@ if [ -f $BUILD_DIR/Gemfile ]; then
 	echo "-----> Installing Gems"
 	export GEM_HOME=$BUILD_DIR/.gem/ruby/1.9.1
 	PATH="$GEM_HOME/bin:$PATH"
-	HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri --install-dir $BUILD_DIR/.gem
+	HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri
 
 	ls -lg $BUILD_DIR/.gem/bin
 
 	export PATH=$PATH:$BUILD_DIR/.gem/bin
 
-	$BUILD_DIR/.gem/bin/bundle install --gemfile $BUILD_DIR/Gemfile --path $BUILD_DIR/.gem
+	bundle install --gemfile $BUILD_DIR/Gemfile --path $BUILD_DIR/.gem
 fi
 
 # Check for npm w/ Grunt enviroment

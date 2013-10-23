@@ -42,7 +42,7 @@ if [ -f $BUILD_DIR/Gemfile ]; then
 
 	ls $PWD/.gem/bin
 
-	export PATH=$PATH:$PWD/.gem
+	export PATH=$PATH:$PWD/.gem/bin
 fi
 
 # Check for npm w/ Grunt enviroment

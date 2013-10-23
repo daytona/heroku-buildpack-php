@@ -34,6 +34,7 @@ if [ -f $BUILD_DIR/Gemfile ]; then
   PATH="$GEM_HOME/bin:$PATH"
   HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri
   bundle install --gemfile $BUILD_DIR/Gemfile --path $BUILD_DIR/.gem
+  ls $BUILD_DIR/.gem
 fi
 
 # Check for npm w/ Grunt enviroment

@@ -34,7 +34,6 @@ if [ -f $BUILD_DIR/Gemfile ]; then
   PATH="$GEM_HOME/bin:$PATH"
   HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri
   bundle install --gemfile $BUILD_DIR/Gemfile --path $BUILD_DIR/.gem
-  ls $BUILD_DIR/.gem
 fi
 
 # Check for npm w/ Grunt enviroment
@@ -53,11 +52,7 @@ fi
 if [ -f $BUILD_DIR/bin/deploy ]; then
 	echo "-----> Executing deploy script"
 
-	cd $BUILD_DIR}/bin
-
-	./deploy ${BUILD_DIR}
-
-	cd $BUILD_DIR
+	.$BUILD_DIR/deploy ${BUILD_DIR}
 
 	echo "done." | indent
 fi

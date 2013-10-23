@@ -29,25 +29,28 @@ echo "       See: https://devcenter.heroku.com/articles/labs-user-env-compile"
 
 # Check for ruby enviroment
 if [ -f $BUILD_DIR/Gemfile ]; then
+	if [ ! -d "$PWD/.gem" ]; then
+	  mkdir $PWD/.gem
+	fi
+
 	echo "-----> Installing Gems"
 	export GEM_HOME=$BUILD_DIR/.gem/ruby/1.9.1
 	PATH="$GEM_HOME/bin:$PATH"
 	HOME=$BUILD_DIR gem install bundler --no-rdoc --no-ri
-	bundle install --gemfile $BUILD_DIR/Gemfile
+
+	bundle install --gemfile $BUILD_DIR/Gemfile --path $PWD/.gem
+
+	export GEM_PATH=$GEM_PATH:$PWD/.gem
 fi
 
 # Check for npm w/ Grunt enviroment
 if [ -f $BUILD_DIR/package.json ]; then
 	echo "-----> Installing Node dependencies"
 	NODE_BUILDPACK_DIR=$(mktemp -d -t node.XXXXXX)
-	NODE_BUILD_DIR=$(mktemp -d -t node_build.XXXXXX)
 	git clone --quiet https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git $NODE_BUILDPACK_DIR
-	cp $BUILD_DIR/package.json $NODE_BUILD_DIR/package.json
 	$NODE_BUILDPACK_DIR/bin/compile $BUILD_DIR $CACHE_DIR
 
-	export PATH=$PATH:$NODE_BUILD_DIR/bin:$NODE_BUILD_DIR/node_modules/.bin
-
-	ls $BUILD_DIR
+	export PATH=$PATH:$BUILD_DIR/bin:$BUILD_DIR/node_modules/.bin
 
 	echo "done." | indent
 fi

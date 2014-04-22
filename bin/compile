@@ -9,7 +9,7 @@ function indent() {
 }
 
 # config
-APACHE_VERSION="2.2.22"
+APACHE_VERSION="2.2.26"
 APACHE_PATH="apache"
 PHP_VERSION="5.4.24"
 PHP_PATH="php"

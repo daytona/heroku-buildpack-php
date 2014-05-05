@@ -55,25 +55,25 @@ fi
 
 # Check for npm w/ Grunt enviroment
 if [ -f $BUILD_DIR/package.json ]; then
-	echo "-----> Installing Node dependencies"
-	NODE_BUILDPACK_DIR=$(mktemp -d -t node.XXXXXX)
-	git clone --quiet https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git $NODE_BUILDPACK_DIR
-	$NODE_BUILDPACK_DIR/bin/compile $BUILD_DIR $CACHE_DIR
+  echo "-----> Installing Node dependencies"
+  NODE_BUILDPACK_DIR=$(mktemp -d -t node.XXXXXX)
+  git clone --quiet https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git $NODE_BUILDPACK_DIR
+  $NODE_BUILDPACK_DIR/bin/compile $BUILD_DIR $CACHE_DIR
 
-	export PATH=$PATH:$BUILD_DIR/bin:$BUILD_DIR/node_modules/.bin
+  export PATH=$PATH:$BUILD_DIR/bin:$BUILD_DIR/node_modules/.bin
 
-	echo "done." | indent
+  echo "done." | indent
 fi
 
 # Check for custom deploy script
 if [ -f $BUILD_DIR/bin/deploy ]; then
-	echo "-----> Executing deploy script"
+  echo "-----> Executing deploy script"
 
-	cd $BUILD_DIR
+  cd $BUILD_DIR
 
-	./bin/deploy $BUILD_DIR
+  ./bin/deploy $BUILD_DIR
 
-	echo "done." | indent
+  echo "done." | indent
 fi
 
 # convenience functions

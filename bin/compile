@@ -2,6 +2,10 @@
 
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
+indent() {
+  sed 's/^/       /'
+}
+
 install_ext () {
     local ext=$1
     local reason=${2:-}

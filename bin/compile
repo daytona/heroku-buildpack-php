@@ -2,10 +2,6 @@
 
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
-function indent() {
-  sed -u 's/^/       /'
-}
-
 install_ext () {
     local ext=$1
     local reason=${2:-}
@@ -41,7 +37,6 @@ ENV_DIR=${3:-} # Anvil has none
 BP_DIR=$(cd $(dirname $0); cd ..; pwd)
 
 # INSTALL LIBRARIES AND COMPILE ASSETS
-# Code borrowed from: https://github.com/abhishekmunie/heroku-buildpack-static-css
 # --------------------------------------------------------------------------------
 
 # Check for ruby enviroment

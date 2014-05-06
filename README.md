@@ -16,6 +16,18 @@ You'll need to use at least an empty `composer.json` in your application.
 
 Please refer to [Dev Center](https://devcenter.heroku.com/categories/php) for further usage instructions.
 
+### Custom functionality
+This buildpack supports Ruby, NodeJS and a custom deploy bash script.
+
+#### Ruby
+This buildpack looks for a `Gemfile` in the root direcotry. If there's a Gemfile; [Bundler](http://bundler.io/) is installed and `bundle install` is executed.
+
+#### NodeJS
+This buldpack looks for a `package.json`-file in the root directory. Upon detecting the file, NodeJS and [Grunt](http://gruntjs.com/) is installed and executed (using [another buildpack](https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git)).
+
+#### Custom deploy script
+Lastly this buildpack looks for a bash script located at `bin/deploy`. If found the script is executed.
+
 ## Development
 
 ### Compiling Binaries
